@@ -1,39 +1,27 @@
-# This is a template API made with NodeJS, Express and Typescript
-This template was made with @ByLife
+# Table of content
 
-# Run the project
-TO LAUNCH THE PROJECT RUN:
+- [Introduction](#introduction)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
-```require NodeJS version > 16.5```
+## Introduction
+This project is a barebone but efficient template for an API in typescript made with the precious help of [Bylife](https://github.com/Bylife), it uses a custom routing system and is built to use it along MongoDB. It integrates every types of request you can think of, websockets, and will integrate webrtc in the future.
 
+## Installation
+Make sure you have installed **typescript** on your system and **npm**, then head over to the root of the project and type ```npm install```
+<br>
+You **need** to create a .env file and add the mongodb tokens
+<br><br>
+If you have any problems with the installation, you can open an issue in this repository.
 
-to install all the dependencies
-``` npm i ```
-<br />
-to run the project
-``` npx nodemon ```
+## Usage
+Run ```npm nodemon``` to run the project !
 
-# Contributing
-Check CONTRIBUTING.md before contributing to fully understand how to contribute to the project.
+## Contributing
+If you want to contribute to this project you can fork this repository and make a pull request with your changes.
+Anyone is welcome to contribute to this project.
 
-# Run the project
-To compile the project just go the root of the project and type
-``` tsc ```
-the project will compile, you can find it in /compilation
-
-# Organisation of the API
-
-- id's are usually sent in the URL
-- other params such as channel_name or server_name are in the body 
-- token is a header (Authorization: Bearer token)
-
-Request is usually: 
-   - GET for small and non sensitive requests (get friends, get channels, get servers)
-   - POST when you are sending a lot of data and/or is sensitive (login, register, create channel, create server)
-
-/api/
--> /v1/ 
-   -> /client/get/friends/:friend_id
-   -> /channel/create/private/:friend_id
-   -> /server/get/:server_id
-   ...
+## License
+This project is under the MIT license.
