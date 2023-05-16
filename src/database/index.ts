@@ -13,8 +13,7 @@ export default {
             username: UserFindByUsername,
             token: UserFindByToken,
             id: UserFindByID,
-            many: UserGetMany,
-            channels: UserGetAllChannels
+            many: UserGetMany
         },
         connect: UserConnect
     }
