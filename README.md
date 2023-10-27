@@ -10,7 +10,7 @@
 ## Introduction
 This project is a barebone but efficient template for an API in typescript made with the precious help of [Bylife](https://github.com/Bylife)
 - It uses a custom routing system and is built to use it along MongoDB.
-- It come by default with multiple types of requests: http and websockets
+- It comes by default with multiple types of requests: http and wss(websockets)
 
 ## Installation
 Make sure you have installed **typescript** on your system and **npm**, then head over to the root of the project and type ```npm install```
