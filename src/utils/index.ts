@@ -1,13 +1,12 @@
-import { BASE16, BASE36, BASE58, BASE8 } from "./base"
-import { CONSTANTS } from "./constants"
-import { FUNCTIONS } from "./functions"
-export default class UTILS {
-    static CONSTANTS = CONSTANTS
-    static FUNCTIONS = FUNCTIONS
-    static BASE = {
-        16: BASE16,
-        8: BASE8,
-        58: BASE58,
-        36: BASE36
+import {USER }from './generate'
+import {STRING }from './verify'
+
+
+export default {
+    GENERATE: {
+        USER: USER
+    },
+    VERIFY: {
+        STRING: STRING
     }
 }

@@ -1,25 +1,21 @@
 import mongoose, {Document, Schema} from "mongoose";
 
-export interface IUser { // This is the interface for the user in the database
-    user_id: number;
+export interface User {
+    user_id: string; // the user id is a unique name that is used to identify the user
     token: string;
-    username: string;
-    password: string;
 
-    updated_at?: string;
-    created_at?: string;
+    username: string; // the username is the name that is displayed to the user
+    password: string; // the password is the password that is used to login
 }
 
-export interface IUserModel extends IUser, Document {}
+export interface UserDocument extends User, Document {}
 
 const UserSchema = new Schema({
-    user_id: { type: Number, required: true, unique: true, index: true },
-    token: { type: String, required: true, unique: true, index: true },
-    username: { type: String, required: true, unique: false, index: true },
-    password: { type: String, required: true },
+    user_id: {type: String, required: true, unique: true},
+    token: {type: String, required: true},
 
-    updated_at: { type: String, required: true, default: new Date().toLocaleString() },
-    created_at: { type: String, required: true, default: new Date().toLocaleString() },
+    username: {type: String, required: true},
+    password: {type: String, required: true},
 });
 
-export default mongoose.model<IUserModel>("User", UserSchema);
+export default mongoose.model<UserDocument>("User", UserSchema);

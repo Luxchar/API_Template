@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import Logger from '../client/logger.client';
-import { config } from '../config';
+import Logger from '../logger';
+import { config } from '../../config';
 
 mongoose.set('strictQuery', false);
 

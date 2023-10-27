@@ -1,10 +1,5 @@
 # Use an official Node.js runtime as a parent image
-FROM alpine
-
-# Install Node.js and npm
-RUN apk add --update nodejs npm
-# Install the musl library for Alpine (required to not get an error when running the application)
-RUN ln -s /lib/libc.musl-x86_64.so.1 /lib/ld-linux-x86-64.so.2
+FROM node:14-alpine
 
 # Set the working directory to /app
 WORKDIR /app
@@ -18,11 +13,11 @@ RUN npm install
 # Copy the rest of the application code to the container
 COPY . .
 
-# Build the TypeScript code
-RUN npm run build
+# Install nodemon globally
+RUN npm install -g nodemon
 
 # Expose port 3000 for the application
 EXPOSE 3000
 
-# Start the application
-CMD ["npm", "run", "start"]
+# Start the application using nodemon
+CMD ["nodemon", "index.ts"]
