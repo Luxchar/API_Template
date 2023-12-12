@@ -9,13 +9,13 @@
 
 ## Introduction
 This project is a barebone but efficient template for an API in typescript made with the precious help of [Bylife](https://github.com/Bylife)
-- It uses a custom routing system and is built to use it along MongoDB.
+- It uses a custom routing system and is built to use it along MongoDB, MYSQL or any other type of SQL database.
 - It comes by default with multiple types of requests: http and wss(websockets)
 
 ## Installation
 Make sure you have installed **typescript** on your system and **npm**, then head over to the root of the project and type ```npm install```
 <br>
-You **need** to create a .env file and add the mongodb tokens
+You **need** to create a .env file and add the database tokens just like in the .env.example
 <br><br>
 If you have any problems with the installation, you can open an issue in this repository.
 
