@@ -13,8 +13,8 @@ import User from "../database/models/User";
 dotenv.config()
 
 export class Autoload { // This is the class that starts the server
-    static app: express.Express = express();
-    static socket: Socket.Server = new Socket.Server(process.env.SOCKET_PORT ? Number(process.env.SOCKET_PORT) : 3001);
+    static app: express.Express | null = Boolean(process.env.HTTP_API) == true ? express() : null;
+    static socket: Socket.Server | null = Boolean(process.env.WEBSOCKETS_API) == true ? new Socket.Server(process.env.SOCKET_PORT ? Number(process.env.SOCKET_PORT) : 3001) : null;
     static port: number = process.env.HTTP_PORT ? Number(process.env.APP_PORT) : 3000;
     static baseDir = path.resolve(__dirname, "../socket");
     
@@ -78,6 +78,7 @@ export class Autoload { // This is the class that starts the server
     
     
     protected static autoloadRoutesFromDirectory(directory: string): void {
+        if(!Autoload.app) return
         const httpMethods: (keyof express.Application)[] = ["get", "post", "put", "delete", "patch", "head", "options"];
         const files = fs.readdirSync(directory);
     
@@ -86,7 +87,7 @@ export class Autoload { // This is the class that starts the server
     
             if (fs.statSync(fullPath).isDirectory()) {
                 Autoload.autoloadRoutesFromDirectory(fullPath);
-            } else if (file.endsWith('.ts')) {
+            } else if (file.endsWith('.ts') || file.endsWith('.js')) {
                 const route = require(fullPath).default;
                 if (route && typeof route.run === 'function' && route.method && route.name) {
                     const httpMethod = route.method.toLowerCase() as keyof express.Application;
@@ -136,6 +137,7 @@ export class Autoload { // This is the class that starts the server
     }
 
     protected static rules() { // This is the function that sets the API rules
+        if(!Autoload.app) return
         Autoload.app.use((req, res, next) => {
             res.header("Access-Control-Allow-Origin", "*");
             res.header('Content-Type', 'application/json')
@@ -153,31 +155,36 @@ export class Autoload { // This is the class that starts the server
         Logger.info("Starting server...")
         DB_Connect().then(() => {
             Autoload.rules()
-            Autoload.app.use(express.json()) // This is the middleware that parses the body of the request to JSON format
-            Autoload.autoloadRoutesFromDirectory(path.join(__dirname, '../http'));
+            if(Autoload.app) {
+                Autoload.app.use(express.json()) // This is the middleware that parses the body of the request to JSON format
+                Autoload.autoloadRoutesFromDirectory(path.join(__dirname, '../http'));
 
-            Autoload.app.listen(Autoload.port, () => {
-                Logger.success(`Server started on port ${Autoload.port}`)
-            });
-
-            Autoload.socket.on("connection", function (socket: Socket.Socket) {
-                const newSocket = redefineSocket(socket);
-                socket.on("conn", async (data: string) => {
-                    console.log(data)
-                    if(!data) return socket.emit("conn", "Please provide a token")
-                    const user = await User.findOne({token: data})
-                    console.log(user)
-                    if(!user) return socket.emit("conn", "Invalid token")
-                    newSocket.storage.user = user
-                    newSocket.storage.logged = true
-                    socket.emit("conn", "Connected to the server")
-                    Autoload.attachHandlersToSocket(newSocket);
-                })  
-                socket.on("disconnect", () => {
-                    Logger.warn(`Socket ${socket.id} disconnected.`);
-                    socket.disconnect(true)
+                Autoload.app.listen(Autoload.port, () => {
+                    Logger.success(`Server started on port ${Autoload.port}`)
                 });
-            });
+            }
+
+            if(Autoload.socket){
+
+                Autoload.socket.on("connection", function (socket: Socket.Socket) {
+                    const newSocket = redefineSocket(socket);
+                    socket.on("conn", async (data: string) => {
+                        console.log(data)
+                        if(!data) return socket.emit("conn", "Please provide a token")
+                        const user = await User.findOne({token: data})
+                        console.log(user)
+                        if(!user) return socket.emit("conn", "Invalid token")
+                        newSocket.storage.user = user
+                        newSocket.storage.logged = true
+                        socket.emit("conn", "Connected to the server")
+                        Autoload.attachHandlersToSocket(newSocket);
+                    })  
+                    socket.on("disconnect", () => {
+                        Logger.warn(`Socket ${socket.id} disconnected.`);
+                        socket.disconnect(true)
+                    });
+                });
+            }
 
             Logger.beautifulSpace()
             Autoload.logInfo()
@@ -186,6 +193,7 @@ export class Autoload { // This is the class that starts the server
     }
 
     public static stop() { // This is the function that stops the server
-        Autoload.socket.close()
+        if(Autoload.socket) Autoload.socket.close()
+        if(Autoload.app) Autoload.app.removeAllListeners()
     }
 }
