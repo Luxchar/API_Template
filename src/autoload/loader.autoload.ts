@@ -15,7 +15,7 @@ dotenv.config()
 export class Autoload { // This is the class that starts the server
     static app: express.Express | null = Boolean(process.env.HTTP_API) == true ? express() : null;
     static socket: Socket.Server | null = Boolean(process.env.WEBSOCKETS_API) == true ? new Socket.Server(process.env.SOCKET_PORT ? Number(process.env.SOCKET_PORT) : 3001) : null;
-    static port: number = process.env.HTTP_PORT ? Number(process.env.APP_PORT) : 3000;
+    static port: number = process.env.HTTP_PORT ? Number(process.env.HTTP_PORT) : 3000;
     static baseDir = path.resolve(__dirname, "../socket");
     
     static rateLimitThreshold = 10000; // 10 000 Events par seconde
@@ -23,7 +23,7 @@ export class Autoload { // This is the class that starts the server
     static clients = new Map();
 
     constructor() {
-        Autoload.port = Number(process.env.APP_PORT) || 3000
+        Autoload.port = Number(process.env.HTTP_PORT) || 3000
         //Autoload.app.use(Autoload.rateLimiter)
         Autoload.start()
         Logger.success("Server started on port " + Autoload.port)
@@ -35,7 +35,7 @@ export class Autoload { // This is the class that starts the server
         ${config.ascii.art}
 
         Version: ${config.api.version}
-        Port: ${Number(process.env.APP_PORT) || 3000}
+        Port: ${Number(process.env.HTTP_PORT) || 3000}
         `)
         // Owners: ${config.application.owners.join(", ")}
     }
