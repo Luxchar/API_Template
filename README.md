@@ -24,7 +24,7 @@ you'll find a dedicated tests folder where you can write and execute your unit t
 <br>
 Install : ```npm install --save-dev jest @types/jest ts-jest```
 <br>
-Run : ```npx jest```
+Run : ```npx jest``` ```npx test```
 
 ## Usage
 Run ```nodemon index.ts``` to run the project !
