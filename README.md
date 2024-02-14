@@ -19,6 +19,9 @@ You **need** to create a .env file and add the database tokens just like in the 
 <br><br>
 If you have any problems with the installation, you can open an issue in this repository.
 
+## Tests set up
+there is a tests folder, where you can run your unit test
+
 ## Usage
 Run ```nodemon index.ts``` to run the project !
 
