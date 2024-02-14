@@ -19,6 +19,13 @@ You **need** to create a .env file and add the database tokens just like in the 
 <br><br>
 If you have any problems with the installation, you can open an issue in this repository.
 
+## Tests set up
+you'll find a dedicated tests folder where you can write and execute your unit tests. This folder is designed to contain all your test scripts to ensure proper testing of your codebase
+<br>
+Install : ```npm install --save-dev jest @types/jest ts-jest```
+<br>
+Run : ```npx jest```
+
 ## Usage
 Run ```nodemon index.ts``` to run the project !
 
